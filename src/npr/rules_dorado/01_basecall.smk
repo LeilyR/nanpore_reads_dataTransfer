@@ -60,8 +60,11 @@ rule basecall:
         """
         echo "do_basecall: {params.do_basecall}" 2>> {log}
         if [[ "{params.do_basecall}" == "do_basecall" ]]; then
-            echo {params.cmd} basecaller {params.model} {params.dir} {params.options} {params.mod} {params.bam} 2>> {log}
-            {params.cmd} basecaller {params.model} {params.dir} {params.options} {params.mod} > {params.bam} 2>> {log}
+            #echo {params.cmd} basecaller {params.model} {params.dir} {params.options} {params.mod} {params.bam} 2>> {log}
+            #{params.cmd} basecaller {params.model} {params.dir} {params.options} {params.mod} > {params.bam} 2>> {log}
+            #when we have to do basecalling we can skip the methylation step as we don't have a reference genome
+            echo {params.cmd} basecaller {params.model} {params.dir} {params.options} {params.bam} 2>> {log}
+            {params.cmd} basecaller {params.model} {params.dir} {params.options} > {params.bam} 2>> {log}
         else
             echo "Basecall step skipped" 2>> {log}
         fi
