@@ -55,12 +55,14 @@ rule align:
         echo "indexing bam {output.file}"
         samtools index -@ {threads} {output.file} 2>> {log}
 
-        echo "pycoQC for bam {output.file}"
+        # pycoQC should not be run from here but from 08_pycoqc.smk and if it fails we should be notified!
+
+        # echo "pycoQC for bam {output.file}"
         # run pycoQC including bam file (for alignment)
         # notice that pycoQC is prone to fail, especially for tests with small bam files --> 
         # enforce success (|| true) and do _not_ require presence of html and json as output of this rule
-        pycoQC --summary_file {input.seqsum} --bam_file {output.file} \
-        {config[pycoQc][pycoQc_opts]} -o {params.html} -j {params.json} >> {log} 2>&1 || true
+        # pycoQC --summary_file {input.seqsum} --bam_file {output.file} \
+        # {config[pycoQc][pycoQc_opts]} -o {params.html} -j {params.json} >> {log} 2>&1 || true
 
         # run samtools flagstat
         echo "samtools flagstat for bam {output.file}"
