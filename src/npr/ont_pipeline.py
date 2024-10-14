@@ -408,6 +408,9 @@ def read_samplesheet(config):
         # Remove any empty space from the sample project when the PI has 2 last names
         sample_project = row["Sample_Project"].replace(" ", "")
 
+        #adding protocol se we can differentiate between RNA, cDNA, dna and 16S
+        protocol=get_organism_name(row["Description"])
+
         if row["Sample_Project"] not in data["projects"]:
             # data["projects"].append(row["Sample_Project"])
             data["projects"].append(sample_project)
@@ -423,6 +426,7 @@ def read_samplesheet(config):
                 .replace("BP", "barcode")
                 .replace("NB", "barcode"),
                 "Sample_ID": row["Sample_ID"],
+                "protocol": protocol,
             }
         )
     if len(data["samples"]) > 1 and config["info_dict"]["barcoding"] == False:
@@ -503,3 +507,13 @@ def remove_spaces(input_string):
         # Remove empty spaces
         return input_string.replace(" ", "")
     return input_string
+
+def get_organism_name(description):
+    if "16S" in description:
+        return "16S"
+    elif "RNA" in description:
+        return "RNA"
+    elif "cDNA" in description:
+        return "cDNA"
+    else:
+        return "dna"
