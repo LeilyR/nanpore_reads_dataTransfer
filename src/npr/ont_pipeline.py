@@ -409,8 +409,8 @@ def read_samplesheet(config):
         sample_project = row["Sample_Project"].replace(" ", "")
 
         #adding protocol se we can differentiate between RNA, cDNA, dna and 16S
-        protocol=get_organism_name(row["Description"])
-
+        protocol=get_protocol(row["Description"])
+        
         if row["Sample_Project"] not in data["projects"]:
             # data["projects"].append(row["Sample_Project"])
             data["projects"].append(sample_project)
@@ -508,7 +508,7 @@ def remove_spaces(input_string):
         return input_string.replace(" ", "")
     return input_string
 
-def get_organism_name(description):
+def get_protocol(description):
     if "16S" in description:
         return "16S"
     elif "RNA" in description:
